@@ -67,7 +67,9 @@ for epoch in range(epochs):
     correct = 0
     total = 0
     
-    for inputs, targets in trainloader:
+    print(f"Epoch {epoch+1}/{epochs} - Training...")
+    
+    for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
         
         optimizer.zero_grad()
@@ -80,11 +82,16 @@ for epoch in range(epochs):
         _, predicted = torch.max(outputs, 1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
+        
+        # Print progress every 100 batches
+        if batch_idx % 100 == 0:
+            print(f'  Batch {batch_idx}/{len(trainloader)}: Loss: {loss.item():.4f}')
     
     train_loss /= len(trainloader)
     train_acc = 100. * correct / total
     
     # Validation
+    print(f"Epoch {epoch+1}/{epochs} - Validation...")
     model.eval()
     val_loss = 0
     correct = 0
