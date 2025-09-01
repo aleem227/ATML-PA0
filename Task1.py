@@ -730,7 +730,7 @@ resnet18.to(device)
 optimizer18 = optim.Adam(resnet18.fc.parameters(), lr=0.001)
 
 # Quick training
-print("Training ResNet-18...")
+print("Training ResNet-18")
 resnet18_acc = []
 for epoch in range(3):
     resnet18.train()
