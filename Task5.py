@@ -32,11 +32,15 @@ class_names = ['airplane', 'bird', 'car', 'cat', 'deer', 'dog', 'horse', 'monkey
 prompting_strategies = {
     'plain': class_names,
     'prompted': [f"a photo of a {name}" for name in class_names],
-    'descriptive': [f"a high-resolution photograph of a {name}" for name in class_names]
+    'descriptive': [f"a clear, high-resolution color photograph showing a {name} in its natural environment with good lighting and sharp focus" for name in class_names]
 }
 
 # Evaluate each strategy
 results = {}
+sample_images = []
+sample_labels = []
+sample_predictions = {}
+
 for strategy_name, prompts in prompting_strategies.items():
     print(f"\nEvaluating {strategy_name} strategy...")
     
@@ -45,6 +49,7 @@ for strategy_name, prompts in prompting_strategies.items():
     
     correct = 0
     total = 0
+    batch_count = 0
     
     with torch.no_grad():
         # Encode text prompts
@@ -62,8 +67,16 @@ for strategy_name, prompts in prompting_strategies.items():
             similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
             predictions = similarity.argmax(dim=-1)
             
+            # Store first batch for visualization
+            if batch_count == 0:
+                if strategy_name == 'descriptive':  # Only save once
+                    sample_images = images[:8].cpu()  # First 8 images
+                    sample_labels = labels[:8]
+                sample_predictions[strategy_name] = predictions[:8].cpu()
+            
             correct += (predictions == labels.to(device)).sum().item()
             total += labels.size(0)
+            batch_count += 1
     
     accuracy = correct / total
     results[strategy_name] = accuracy
@@ -80,6 +93,38 @@ plt.ylabel('Accuracy')
 plt.ylim(0, 1)
 for i, acc in enumerate(accuracies):
     plt.text(i, acc + 0.01, f'{acc:.3f}', ha='center')
+plt.show()
+
+# Visualize sample predictions
+plt.figure(figsize=(16, 12))
+for i in range(8):
+    plt.subplot(2, 4, i+1)
+    
+    # Convert tensor to numpy and transpose for matplotlib (C, H, W) -> (H, W, C)
+    img = sample_images[i].permute(1, 2, 0).numpy()
+    
+    # Denormalize the image (CLIP uses ImageNet normalization)
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    img = img * std + mean
+    img = np.clip(img, 0, 1)
+    
+    plt.imshow(img)
+    plt.axis('off')
+    
+    true_label = class_names[sample_labels[i]]
+    
+    # Show predictions for each strategy
+    title = f"True: {true_label}\n"
+    for strategy in ['plain', 'prompted', 'descriptive']:
+        pred_idx = sample_predictions[strategy][i].item()
+        pred_label = class_names[pred_idx]
+        correct = "✓" if pred_idx == sample_labels[i] else "✗"
+        title += f"{strategy}: {pred_label} {correct}\n"
+
+    plt.title(title, fontsize=8)
+
+plt.tight_layout()
 plt.show()
 
 # ----------------------------------------------------------------------------
@@ -260,8 +305,8 @@ with torch.no_grad():
         image_features_aligned = torch.from_numpy(image_features.cpu().numpy() @ R).to(device).float()
         image_features_aligned /= image_features_aligned.norm(dim=-1, keepdim=True)
         
-        # Aligned prediction
-        similarity_aligned = (100.0 * image_features_aligned @ text_features.T).softmax(dim=-1)
+        # Aligned prediction (ensure dtype compatibility)
+        similarity_aligned = (100.0 * image_features_aligned @ text_features.T.float()).softmax(dim=-1)
         predictions_aligned = similarity_aligned.argmax(dim=-1)
         correct_aligned += (predictions_aligned == labels.to(device)).sum().item()
         
