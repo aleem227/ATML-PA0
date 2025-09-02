@@ -69,7 +69,7 @@ print("\nPart 2: Visualizing Patch Attention")
 
 
 # Test attention visualization on one image
-test_image, test_label = cifar[0]
+test_image, test_label = cifar[100]
 test_image = test_image.resize((224, 224))
 
 print(f"Visualizing attention for: {class_names[test_label]}")

@@ -640,18 +640,27 @@ limited_data = []
 limited_targets = []
 samples_per_class = 20  # Very limited
 
-for class_idx in range(10):
-    class_samples = [x for x, y in zip(limited_data, limited_targets) if y == class_idx]
-    limited_data.extend(class_samples[:samples_per_class])
-    limited_targets.extend([class_idx] * samples_per_class)
+# Collect samples from training dataset
+for x, y in train_dataset:
+    if len([t for t in limited_targets if t == y]) < samples_per_class:
+        limited_data.append(x)
+        limited_targets.append(y)
+    
+    # Stop when we have enough samples for all classes
+    if len(limited_data) >= samples_per_class * 10:
+        break
 
 limited_data = torch.stack(limited_data)
 limited_targets = torch.tensor(limited_targets)
 
 print(f"Limited dataset size: {len(limited_data)}")
 
-# Create validation set (held-out real data)
-val_data = limited_data[2000:2500]  # 500 unseen real images
+# Create validation set (held-out real data from full dataset)
+val_data = []
+for i, (x, y) in enumerate(train_dataset):
+    if i >= 2000 and i < 2500:  # Take from different part of dataset
+        val_data.append(x)
+val_data = torch.stack(val_data)
 
 # Reset models for overfitting experiment
 class OvercapacityDiscriminator(nn.Module):

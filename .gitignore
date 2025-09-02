@@ -2,3 +2,8 @@ venv/
 __pycache__/
 ICML2021 Template.zip
 data/
+task1_result.txt
+task2_result.txt
+task3_results.txt
+task4_results.txt
+task5_results.txt

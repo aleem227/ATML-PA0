@@ -190,7 +190,7 @@ optimizer_modified = optim.Adam(model_modified.fc.parameters(), lr=0.001)
 
 # Training loop for modified model
 train_losses_mod = []
-train_accs_mod = []
+train_accs_mod = []                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 val_losses_mod = []
 val_accs_mod = []
 
@@ -293,7 +293,7 @@ plt.ylabel('Accuracy (%)')
 plt.legend()
 
 plt.tight_layout()
-plt.savefig('Figures\Task-1\comparison_results.png')
+plt.savefig(r'Figures\Task-1\comparison_results.png')
 plt.show()
 
 # ----------------------------------------------------------------------------
@@ -403,7 +403,7 @@ plt.xlabel('t-SNE 1')
 plt.ylabel('t-SNE 2')
 
 plt.tight_layout()
-plt.savefig('Figures\Task-1\feature_hierarchies.png', dpi=300, bbox_inches='tight')
+plt.savefig(r'Figures/Task-1/feature_hierarchies.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 print("Feature hierarchy analysis completed!")
@@ -602,183 +602,183 @@ plt.ylabel('Loss')
 plt.legend()
 
 plt.tight_layout()
-plt.savefig('Figures\Task-1\transfer_learning_comparison.png', dpi=300, bbox_inches='tight')
+plt.savefig(r'Figures\Task-1\transfer_learning_comparison.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 print("Transfer learning analysis completed!")
 print("=" * 60)
 
 
-# ----------------------------------------------------------------------------
-# ------------------------- OPTIONAL EXPERIMENTS ----------------------------
-# ----------------------------------------------------------------------------
+# # ----------------------------------------------------------------------------
+# # ------------------------- OPTIONAL EXPERIMENTS ----------------------------
+# # ----------------------------------------------------------------------------
 
-# a) Compare t-SNE vs UMAP in representing feature separability
+# # a) Compare t-SNE vs UMAP in representing feature separability
 
 
-print("Part 5 - Optional Experiments")
+# print("Part 5 - Optional Experiments")
 
-# Use existing features from part c
-sample_size = min(300, len(feature_labels))
-early_sample = early_features[:sample_size]
-late_sample = late_features[:sample_size]
-labels_sample = feature_labels[:sample_size]
+# # Use existing features from part c
+# sample_size = min(300, len(feature_labels))
+# early_sample = early_features[:sample_size]
+# late_sample = late_features[:sample_size]
+# labels_sample = feature_labels[:sample_size]
 
-# Apply t-SNE
-tsne = TSNE(n_components=2, random_state=42)
-early_tsne = tsne.fit_transform(early_sample)
-late_tsne = tsne.fit_transform(late_sample)
+# # Apply t-SNE
+# tsne = TSNE(n_components=2, random_state=42)
+# early_tsne = tsne.fit_transform(early_sample)
+# late_tsne = tsne.fit_transform(late_sample)
 
-# Apply UMAP  
-umap_model = umap.UMAP(n_components=2, random_state=42)
-early_umap = umap_model.fit_transform(early_sample)
-late_umap = umap_model.fit_transform(late_sample)
+# # Apply UMAP  
+# umap_model = umap.UMAP(n_components=2, random_state=42)
+# early_umap = umap_model.fit_transform(early_sample)
+# late_umap = umap_model.fit_transform(late_sample)
 
-# Plot comparison
-plt.figure(figsize=(12, 8))
+# # Plot comparison
+# plt.figure(figsize=(12, 8))
 
-plt.subplot(2, 2, 1)
-for i in range(10):
-    mask = np.array(labels_sample) == i
-    plt.scatter(early_tsne[mask, 0], early_tsne[mask, 1], 
-               c=[colors[i]], label=class_names[i], alpha=0.7)
-plt.title('Early Features - t-SNE')
-plt.legend()
+# plt.subplot(2, 2, 1)
+# for i in range(10):
+#     mask = np.array(labels_sample) == i
+#     plt.scatter(early_tsne[mask, 0], early_tsne[mask, 1], 
+#                c=[colors[i]], label=class_names[i], alpha=0.7)
+# plt.title('Early Features - t-SNE')
+# plt.legend()
 
-plt.subplot(2, 2, 2)
-for i in range(10):
-    mask = np.array(labels_sample) == i
-    plt.scatter(early_umap[mask, 0], early_umap[mask, 1], 
-               c=[colors[i]], label=class_names[i], alpha=0.7)
-plt.title('Early Features - UMAP')
+# plt.subplot(2, 2, 2)
+# for i in range(10):
+#     mask = np.array(labels_sample) == i
+#     plt.scatter(early_umap[mask, 0], early_umap[mask, 1], 
+#                c=[colors[i]], label=class_names[i], alpha=0.7)
+# plt.title('Early Features - UMAP')
 
-plt.subplot(2, 2, 3)
-for i in range(10):
-    mask = np.array(labels_sample) == i
-    plt.scatter(late_tsne[mask, 0], late_tsne[mask, 1], 
-               c=[colors[i]], label=class_names[i], alpha=0.7)
-plt.title('Late Features - t-SNE')
+# plt.subplot(2, 2, 3)
+# for i in range(10):
+#     mask = np.array(labels_sample) == i
+#     plt.scatter(late_tsne[mask, 0], late_tsne[mask, 1], 
+#                c=[colors[i]], label=class_names[i], alpha=0.7)
+# plt.title('Late Features - t-SNE')
 
-plt.subplot(2, 2, 4)
-for i in range(10):
-    mask = np.array(labels_sample) == i
-    plt.scatter(late_umap[mask, 0], late_umap[mask, 1], 
-               c=[colors[i]], label=class_names[i], alpha=0.7)
-plt.title('Late Features - UMAP')
+# plt.subplot(2, 2, 4)
+# for i in range(10):
+#     mask = np.array(labels_sample) == i
+#     plt.scatter(late_umap[mask, 0], late_umap[mask, 1], 
+#                c=[colors[i]], label=class_names[i], alpha=0.7)
+# plt.title('Late Features - UMAP')
 
-plt.tight_layout()
-plt.savefig('Figures\Task-1\tsne_vs_umap.png')
-plt.show()
+# plt.tight_layout()
+# plt.savefig(r'Figures\Task-1\tsne_vs_umap.png')
+# plt.show()
 
-# b) Analyze confusion between classes
-print("Optional Experiment 2: Class confusion analysis")
+# # b) Analyze confusion between classes
+# print("Optional Experiment 2: Class confusion analysis")
 
-# Get model predictions
-model.eval()
-predictions = []
-true_labels = []
+# # Get model predictions
+# model.eval()
+# predictions = []
+# true_labels = []
 
-with torch.no_grad():
-    for inputs, targets in testloader:
-        inputs = inputs.to(device)
-        outputs = model(inputs)
-        _, preds = torch.max(outputs, 1)
-        predictions.extend(preds.cpu().numpy())
-        true_labels.extend(targets.numpy())
+# with torch.no_grad():
+#     for inputs, targets in testloader:
+#         inputs = inputs.to(device)
+#         outputs = model(inputs)
+#         _, preds = torch.max(outputs, 1)
+#         predictions.extend(preds.cpu().numpy())
+#         true_labels.extend(targets.numpy())
 
-# Create confusion matrix
-cm = confusion_matrix(true_labels, predictions)
+# # Create confusion matrix
+# cm = confusion_matrix(true_labels, predictions)
 
-# Plot confusion matrix
-plt.figure(figsize=(10, 8))
-plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-plt.title('Confusion Matrix')
-plt.colorbar()
-plt.xticks(range(10), class_names, rotation=45)
-plt.yticks(range(10), class_names)
-plt.xlabel('Predicted')
-plt.ylabel('True')
+# # Plot confusion matrix
+# plt.figure(figsize=(10, 8))
+# plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+# plt.title('Confusion Matrix')
+# plt.colorbar()
+# plt.xticks(range(10), class_names, rotation=45)
+# plt.yticks(range(10), class_names)
+# plt.xlabel('Predicted')
+# plt.ylabel('True')
 
-# Add numbers to plot
-for i in range(10):
-    for j in range(10):
-        plt.text(j, i, str(cm[i, j]), ha='center', va='center')
+# # Add numbers to plot
+# for i in range(10):
+#     for j in range(10):
+#         plt.text(j, i, str(cm[i, j]), ha='center', va='center')
 
-plt.tight_layout()
-plt.savefig('Figures\Task-1\confusion_matrix.png')
-plt.show()
+# plt.tight_layout()
+# plt.savefig(r'Figures\Task-1\confusion_matrix.png')
+# plt.show()
 
-# Find most confused pairs
-confused_pairs = []
-for i in range(10):
-    for j in range(10):
-        if i != j and cm[i][j] > 30:
-            confused_pairs.append((class_names[i], class_names[j], cm[i][j]))
+# # Find most confused pairs
+# confused_pairs = []
+# for i in range(10):
+#     for j in range(10):
+#         if i != j and cm[i][j] > 30:
+#             confused_pairs.append((class_names[i], class_names[j], cm[i][j]))
 
-confused_pairs.sort(key=lambda x: x[2], reverse=True)
-print("Most confused class pairs:")
-for class1, class2, count in confused_pairs[:5]:
-    print(f"{class1} confused as {class2}: {count} times")
+# confused_pairs.sort(key=lambda x: x[2], reverse=True)
+# print("Most confused class pairs:")
+# for class1, class2, count in confused_pairs[:5]:
+#     print(f"{class1} confused as {class2}: {count} times")
 
-# c) Compare ResNet-152 vs ResNet-18
-print("Optional Experiment 3: ResNet-152 vs ResNet-18 comparison")
+# # c) Compare ResNet-152 vs ResNet-18
+# print("Optional Experiment 3: ResNet-152 vs ResNet-18 comparison")
 
-# Load ResNet-18
-resnet18 = torchvision.models.resnet18(pretrained=True)
-resnet18.fc = nn.Linear(resnet18.fc.in_features, 10)
+# # Load ResNet-18
+# resnet18 = torchvision.models.resnet18(pretrained=True)
+# resnet18.fc = nn.Linear(resnet18.fc.in_features, 10)
 
-# Freeze and setup
-for param in resnet18.parameters():
-    param.requires_grad = False
-for param in resnet18.fc.parameters():
-    param.requires_grad = True
+# # Freeze and setup
+# for param in resnet18.parameters():
+#     param.requires_grad = False
+# for param in resnet18.fc.parameters():
+#     param.requires_grad = True
 
-resnet18.to(device)
-optimizer18 = optim.Adam(resnet18.fc.parameters(), lr=0.001)
+# resnet18.to(device)
+# optimizer18 = optim.Adam(resnet18.fc.parameters(), lr=0.001)
 
-# Quick training
-print("Training ResNet-18")
-resnet18_acc = []
-for epoch in range(3):
-    resnet18.train()
-    for inputs, targets in trainloader:
-        inputs, targets = inputs.to(device), targets.to(device)
-        optimizer18.zero_grad()
-        outputs = resnet18(inputs)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer18.step()
+# # Quick training
+# print("Training ResNet-18")
+# resnet18_acc = []
+# for epoch in range(3):
+#     resnet18.train()
+#     for inputs, targets in trainloader:
+#         inputs, targets = inputs.to(device), targets.to(device)
+#         optimizer18.zero_grad()
+#         outputs = resnet18(inputs)
+#         loss = criterion(outputs, targets)
+#         loss.backward()
+#         optimizer18.step()
     
-    # Test accuracy
-    resnet18.eval()
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for inputs, targets in testloader:
-            inputs, targets = inputs.to(device), targets.to(device)
-            outputs = resnet18(inputs)
-            _, predicted = torch.max(outputs, 1)
-            total += targets.size(0)
-            correct += predicted.eq(targets).sum().item()
+#     # Test accuracy
+#     resnet18.eval()
+#     correct = 0
+#     total = 0
+#     with torch.no_grad():
+#         for inputs, targets in testloader:
+#             inputs, targets = inputs.to(device), targets.to(device)
+#             outputs = resnet18(inputs)
+#             _, predicted = torch.max(outputs, 1)
+#             total += targets.size(0)
+#             correct += predicted.eq(targets).sum().item()
     
-    acc = 100. * correct / total
-    resnet18_acc.append(acc)
-    print(f'ResNet-18 Epoch {epoch+1}: {acc:.2f}%')
+#     acc = 100. * correct / total
+#     resnet18_acc.append(acc)
+#     print(f'ResNet-18 Epoch {epoch+1}: {acc:.2f}%')
 
-# Compare final accuracies
-plt.figure(figsize=(8, 5))
-models = ['ResNet-152', 'ResNet-18']
-accuracies = [baseline_val_accs[-1], resnet18_acc[-1]]
-plt.bar(models, accuracies, color=['blue', 'red'])
-plt.title('Model Comparison')
-plt.ylabel('Validation Accuracy (%)')
-for i, acc in enumerate(accuracies):
-    plt.text(i, acc + 1, f'{acc:.2f}%', ha='center')
-plt.savefig('Figures\Task-1\model_comparison.png')
-plt.show()
+# # Compare final accuracies
+# plt.figure(figsize=(8, 5))
+# models = ['ResNet-152', 'ResNet-18']
+# accuracies = [baseline_val_accs[-1], resnet18_acc[-1]]
+# plt.bar(models, accuracies, color=['blue', 'red'])
+# plt.title('Model Comparison')
+# plt.ylabel('Validation Accuracy (%)')
+# for i, acc in enumerate(accuracies):
+#     plt.text(i, acc + 1, f'{acc:.2f}%', ha='center')
+# plt.savefig(r'Figures\Task-1\model_comparison.png')
+# plt.show()
 
-print(f"ResNet-152 final accuracy: {baseline_val_accs[-1]:.2f}%")
-print(f"ResNet-18 final accuracy: {resnet18_acc[-1]:.2f}%")
+# print(f"ResNet-152 final accuracy: {baseline_val_accs[-1]:.2f}%")
+# print(f"ResNet-18 final accuracy: {resnet18_acc[-1]:.2f}%")
 
 
-print("Optional experiments completed!")
+# print("Optional experiments completed!")
